@@ -1,82 +1,50 @@
 import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
 
-# Function to load CSS
+st.set_page_config(page_title="🥗 Recommendations", layout="wide")
+
 def load_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-load_css("assets/style.css")
 
-# --- Mock Data for Plans ---
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    return r.json() if r.status_code == 200 else None
+
+load_css("assets/style.css")
+lottie_fit = load_lottieurl("https://lottie.host/bb60b7a7-5a5f-4f36-b9d7-50ee2474b62c/yYH7HxtLzQ.json")
+
 PLANS = {
-    "Acne": {
-        "eat": ["🥦 Leafy Greens", "🍣 Salmon (Omega-3s)", "🥜 Zinc (Nuts, Seeds)"],
-        "avoid": ["🥛 Dairy Products", "🍩 High-Glycemic Foods", "🍔 Greasy/Processed Foods"],
-        "exercise": ["🧘 Yoga (Stress Reduction)", " cardio (Blood Circulation)"]
-    },
-    "Eczema": {
-        "eat": ["🥑 Avocado (Healthy Fats)", " probiotics (Yogurt, Kefir)", "🐟 Mackerel (Anti-inflammatory)"],
-        "avoid": ["🥚 Eggs (Common Allergen)", "🌶️ Spicy Foods", "🍅 Nightshades (for some)"],
-        "exercise": ["🏊 Swimming (Cooling)", " low-impact cardio"]
-    },
-    "Benign Nevi (Moles)": {
-        "eat": ["🍓 Berries (Antioxidants)", "🥕 Carrots (Vitamin A)", "🍊 Oranges (Vitamin C)"],
-        "avoid": ["- General skin health, no specific avoidances."],
-        "exercise": ["- General fitness", "☀️ **Priority:** Sun Protection (UPF Clothing, Shade)"]
-    },
-    "default": {
-        "eat": ["- Please get a diagnosis first."],
-        "avoid": ["-"],
-        "exercise": ["-"]
-    }
+    "Acne": {"eat": ["Leafy Greens", "Salmon", "Nuts & Seeds"], "avoid": ["Dairy", "Processed Foods"], "exercise": ["Yoga", "Cardio"]},
+    "Eczema": {"eat": ["Avocado", "Probiotics", "Mackerel"], "avoid": ["Eggs", "Spices"], "exercise": ["Swimming", "Light Stretching"]},
+    "Benign Nevi (Moles)": {"eat": ["Berries", "Carrots", "Oranges"], "avoid": ["None"], "exercise": ["General Fitness", "Sun Protection"]},
 }
 
 st.title("🥗 Personalized Recommendations")
 
-# --- Check if Diagnosis Exists ---
-if 'diagnosis' not in st.session_state or st.session_state.diagnosis is None:
-    st.warning("Please upload an image on the 'Diagnosis' page first.")
-    if st.button("Go to Diagnosis ⬅️"):
-        st.switch_page("pages/1_🏥_Diagnosis.py")
+if 'diagnosis' not in st.session_state:
+    st.warning("Please complete a diagnosis first.")
 else:
-    diagnosis = st.session_state.diagnosis
-    plan = PLANS.get(diagnosis, PLANS["default"])
-    
-    st.header(f"Your Personalized Plan for: **{diagnosis}**")
-    st.write("Based on your condition, here are lifestyle suggestions to support your wellness.")
-    
-    tab1, tab2 = st.tabs(["🥦 Diet Plan", "🧘 Exercise Plan"])
-    
-    with tab1:
-        st.markdown(
-            f"""
-            <div class="recommend-card-eat">
-                <div class="card-header">🥦 Foods to Eat</div>
-                <ul>{''.join(f'<li>{item}</li>' for item in plan['eat'])}</ul>
-            </div>
-            <div class="recommend-card-avoid">
-                <div class="card-header">🚫 Foods to Avoid</div>
-                <ul>{''.join(f'<li>{item}</li>' for item in plan['avoid'])}</ul>
-            </div>
-            """, unsafe_allow_html=True
-        )
+    d = st.session_state.diagnosis
+    plan = PLANS[d]
+    st.subheader(f"Wellness Plan for {d}")
 
-    with tab2:
-        st.markdown(
-            f"""
-            <div class="recommend-card-exercise">
-                <div class="card-header">🧘 Suggested Exercises</div>
-                <ul>{''.join(f'<li>{item}</li>' for item in plan['exercise'])}</ul>
-            </div>
-            """, unsafe_allow_html=True
-        )
+    col1, col2 = st.columns([1.3, 1])
+    with col1:
+        tab1, tab2 = st.tabs(["🥦 Diet Plan", "🧘 Exercise Plan"])
+        with tab1:
+            st.markdown(f"<div class='recommend-card slide-in'><h4>Foods to Eat</h4><ul>{''.join(f'<li>{i}</li>' for i in plan['eat'])}</ul></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='recommend-card slide-in'><h4>Foods to Avoid</h4><ul>{''.join(f'<li>{i}</li>' for i in plan['avoid'])}</ul></div>", unsafe_allow_html=True)
+        with tab2:
+            st.markdown(f"<div class='recommend-card slide-in'><h4>Suggested Exercises</h4><ul>{''.join(f'<li>{i}</li>' for i in plan['exercise'])}</ul></div>", unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.subheader("🤖 Get Daily Tips")
-    if st.button("Get a Daily Wellness Tip (Mock LLM)"):
-        # This mocks the LLM call
-        tips = [
-            "Tip: Remember to drink at least 8 glasses of water today to support skin hydration!",
-            "Tip: A 10-minute walk after meals can aid digestion and improve overall health.",
-            "Tip: Try a 5-minute mindfulness session to reduce stress, which can be a trigger for skin inflammation."
-        ]
-        st.info(f"**Tip of the Day:** {tips[hash(diagnosis) % len(tips)]}")
+        st.markdown("---")
+        if st.button("📈 Go to Progress Tracking"):
+            st.switch_page("pages/3_Progress_Tracking.py")
+
+    with col2:
+        if lottie_fit:
+            st_lottie(lottie_fit, height=350, key="fitness_anim")
+
+st.markdown("<hr><div class='footer'>🏠 <a href='../app.py'>Back to Home</a></div>", unsafe_allow_html=True)

@@ -1,44 +1,39 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+from streamlit_lottie import st_lottie
+import requests
 
-# Function to load CSS
+st.set_page_config(page_title="📈 Progress Tracking", layout="wide")
+
 def load_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    return r.json() if r.status_code == 200 else None
+
 load_css("assets/style.css")
+lottie_progress = load_lottieurl("https://lottie.host/9f35120a-328b-49f0-9851-12b8c74c7a15/2m2tCwKPVv.json")
 
 st.title("📈 Progress Tracking")
-st.write("Track your progress over time using feedback and observation.")
+st.write("Track your wellness journey and visualize improvements over time.")
 
-# --- Mock Progress Chart ---
-st.header("Mock Progress Chart")
-st.write("This chart demonstrates how your self-reported feedback could be tracked.")
+col1, col2 = st.columns([1.4, 1])
+with col1:
+    data = pd.DataFrame({"Week": range(1, 8), "Severity": [8, 8, 7, 6, 5, 4, 3], "Adherence": [4, 6, 7, 8, 7, 8, 9]}).set_index("Week")
+    st.line_chart(data)
 
-# Create fake data
-chart_data = pd.DataFrame(
-    {
-        "Week": [1, 2, 3, 4, 5, 6, 7],
-        "Symptom Severity (Reported)": [8, 8, 7, 6, 5, 4, 3],
-        "Plan Adherence (Reported)": [4, 6, 7, 8, 7, 8, 9]
-    }
-).set_index("Week")
+    st.subheader("📝 Submit Feedback")
+    severity = st.slider("Symptom Severity (10 = worst)", 0, 10, 5)
+    adherence = st.slider("Plan Adherence (10 = perfect)", 0, 10, 7)
+    note = st.text_area("Additional Notes (optional)")
 
-st.line_chart(chart_data)
+    if st.button("Log Progress", type="primary"):
+        st.success("Your feedback has been logged successfully! 🎉")
 
-st.markdown("---")
+with col2:
+    if lottie_progress:
+        st_lottie(lottie_progress, height=350, key="progress_lottie")
 
-
-# --- Feedback Input ---
-st.header("Submit Your Weekly Feedback")
-st.write("Your feedback helps the system refine its recommendations over time.")
-
-symptom_level = st.slider("How would you rate your symptom severity this week? (10 = Worst)", 0, 10, 5)
-adherence_level = st.slider("How well did you adhere to the wellness plan? (10 = Perfectly)", 0, 10, 7)
-feedback_text = st.text_area("Any additional notes for this week? (e.g., 'I felt great after yoga!')")
-
-if st.button("Log My Progress", type="primary"):
-    # In a real app, this would save to a database
-    st.toast("Your progress has been logged! The system will learn from this.", icon="🎉")
-    
-    # You could add to a session_state list here to show a history
+st.markdown("<hr><div class='footer'>🏠 <a href='../app.py'>Back to Home</a></div>", unsafe_allow_html=True)

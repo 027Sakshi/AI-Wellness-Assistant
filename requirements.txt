@@ -1,3 +1,23 @@
-streamlit
-streamlit-lottie
-pandas
+# Core app framework
+streamlit>=1.38.0
+
+# For animations
+streamlit-lottie>=0.0.5
+
+# For fetching animation URLs
+requests>=2.31.0
+
+# For data handling and charts
+pandas>=2.2.2
+
+# Optional (recommended for local dev on Windows)
+numpy>=1.26.4
+
+# For consistent rendering and layout
+watchdog>=3.0.0
+
+# For better emoji + unicode rendering in Windows terminal
+rich>=13.7.0
+
+# For smooth Streamlit performance on Windows
+altair>=5.3.0

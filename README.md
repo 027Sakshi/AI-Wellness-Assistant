@@ -1,9 +1,9 @@
-# 🤖 AI-Powered Personalized Wellness Assistant
+# AI-Powered Personalized Wellness Assistant
 
 A smart health companion that links skin condition detection with personalized diet and exercise guidance.
 
 
-## ⚠️ Prototype Showcase
+## Prototype Showcase
 
 > **Important Note:** This repository contains a **high-fidelity visual prototype**. The primary goal is to demonstrate the application's user interface (UI), user experience (UX), and complete feature flow.
 >
@@ -11,7 +11,7 @@ A smart health companion that links skin condition detection with personalized d
 
 ---
 
-## 🧩 Problem & Solution
+## Problem & Solution
 
 Current health apps are often siloed: skin-related apps focus only on detection, while fitness apps ignore underlying medical conditions.  
 Our solution bridges this gap by providing a holistic, three-step wellness loop:
@@ -22,17 +22,17 @@ Our solution bridges this gap by providing a holistic, three-step wellness loop:
 
 ---
 
-## ✨ Features (Showcased in Prototype)
+## Features (Showcased in Prototype)
 
-- 🏠 **Home Page:** Explains the project's mission, workflow, and team.  
-- 🏥 **Mock Diagnosis:** Upload image → select mock condition → view AI-style analysis card.  
-- 🥗 **Personalized Recommendations:** Custom diet, exercise, and lifestyle guidance per diagnosis.  
-- 📈 **Progress Tracking:** Displays mock progress charts and feedback logging interface.  
-- 🎨 **Custom UI:** Beautiful interface styled with `assets/style.css`.
+- **Home Page:** Explains the project's mission, workflow, and team.  
+- **Mock Diagnosis:** Upload image → select mock condition → view AI-style analysis card.  
+- **Personalized Recommendations:** Custom diet, exercise, and lifestyle guidance per diagnosis.  
+- **Progress Tracking:** Displays mock progress charts and feedback logging interface.  
+- **Custom UI:** Beautiful interface styled with `assets/style.css`.
 
 ---
 
-## 🛠️ Tech Stack (Prototype)
+## Tech Stack (Prototype)
 
 - **Core Framework:** Streamlit  
 - **Data Handling:** Pandas (for mock charts)  
@@ -42,7 +42,7 @@ Our solution bridges this gap by providing a holistic, three-step wellness loop:
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ```
 AI-Wellness-Assistant/
@@ -58,7 +58,7 @@ AI-Wellness-Assistant/
 
 ---
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 ### 1. Clone the repository
 ```bash
@@ -90,8 +90,9 @@ The app should open automatically in your browser.
 
 ---
 
-## 🧑‍🤝‍🧑 Project Team
+## Project Team
 
 - **Presented by:** Sakshi Giglani, Bhavya Thakkar  
 - **Guided by:** Dr. Madhuri Chopade
+
 
